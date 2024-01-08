@@ -2,6 +2,8 @@ create database Enterprise;
 
 use Enterprise;
 
+drop database Enterprise
+
 CREATE TABLE Department (
 	DEPARTMENT_ID INT
 		CONSTRAINT pk_DEPARTMENT PRIMARY KEY,
@@ -14,19 +16,21 @@ CREATE TABLE PROJECTS(
 	PROJECT_NAME VARCHAR(50)
 );
 
-CREATE TABLE Employees(
-	EMPLOYEE_ID INT 
-		CONSTRAINT pk_EMPLOYEES PRIMARY KEY,
-	F_NAME VARCHAR(20),
-	L_NAME VARCHAR(30),
-	DEPARTMENT_ID INT
-		CONSTRAINT fk_DEPARTMENT_ID FOREIGN KEY(DEPARTMENT_ID)
-		REFERENCES Department(DEPARTMENT_ID),
-	IDENTIFICATION_CARD VARCHAR(50) UNIQUE
-	    CONSTRAINT CHK_CedulaFormato CHECK (
-        IDENTIFICATION_CARD LIKE '[0-9]{1,2}-[0-9]{3}-[0-9]{3,4}'
+CREATE TABLE Employees (
+    EMPLOYEE_ID INT PRIMARY KEY,
+    F_NAME VARCHAR(20),
+    L_NAME VARCHAR(30),
+    DEPARTMENT_ID INT,
+    IDENTIFICATION_CARD CHAR(12),
+    CONSTRAINT fk_DEPARTMENT_ID FOREIGN KEY (DEPARTMENT_ID)
+        REFERENCES Department (DEPARTMENT_ID),
+    CONSTRAINT CHK_CedulaFormato CHECK (
+        IDENTIFICATION_CARD LIKE '[0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'
     )
 );
+
+
+
 
 CREATE TABLE EMPLOYEE_PROJECT (
 	PROJECT_ID INT
@@ -55,3 +59,53 @@ CREATE TABLE EMPLOYES_MAIL (
 	MAIL VARCHAR(50)
 )
 
+
+
+-- Inserts Department
+INSERT INTO Department (DEPARTMENT_ID, DEPARTMENT_NAME) VALUES
+	(1, 'Human Resources'),
+	(2, 'IT Department'),
+	(3, 'Finance'),
+	(4, 'Marketing'),
+	(5, 'Operations');
+
+-- Inserts PROJECTS
+INSERT INTO PROJECTS (PROJECT_ID, PROJECT_NAME) VALUES
+	(101, 'Project A'),
+	(102, 'Project B'),
+	(103, 'Project C'),
+	(104, 'Project D'),
+	(105, 'Project E');
+
+
+-- Inserts Employees
+INSERT INTO Employees VALUES
+	(1, 'John', 'Doe', 1, '12-3456-7890'),
+	(2, 'Jane', 'Smith', 2, '11-0789-0123'),
+	(1003, 'Robert', 'Johnson', 3, '03-0456-7890'),
+	(1004, 'Emily', 'Jones', 1, '04-0234-5678'),
+	(1005, 'Michael', 'Williams', 4, '05-0678-9012');
+
+-- Inserts EMPLOYEE_PROJECT
+INSERT INTO EMPLOYEE_PROJECT (PROJECT_ID, EMPLOYEE_ID) VALUES
+	(101, 1),
+	(102, 2),
+	(103, 1003),
+	(104, 1004),
+	(105, 1005);
+
+-- Inserts EMPLOYES_PHONE
+INSERT INTO EMPLOYES_PHONE (PHONE_ID, EMPLOYEE_ID, PHONE) VALUES
+	(1, 1, '555-1234'),
+	(2, 2, '555-5678'),
+	(3, 1003, '555-9012'),
+	(4, 1004, '555-3456'),
+	(5, 1005, '555-7890');
+
+-- Inserts EMPLOYES_MAIL
+INSERT INTO EMPLOYES_MAIL (MAIL_ID, EMPLOYEE_ID, MAIL) VALUES
+	(1, 1, 'john.doe@example.com'),
+	(2, 2, 'jane.smith@example.com'),
+	(3, 1003, 'robert.johnson@example.com'),
+	(4, 1004, 'emily.jones@example.com'),
+	(5, 1005, 'michael.williams@example.com');
